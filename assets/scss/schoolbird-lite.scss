@@ -1,0 +1,38 @@
+
+
+@import 'schoolbird-lite/variables';
+@import 'schoolbird-lite/mixins';
+
+// Plugins CSS
+@import "schoolbird-lite/plugins/plugin-animate-bootstrap-notify";
+@import "schoolbird-lite/plugins/plugin-perfect-scrollbar";
+
+// Core CSS
+@import "schoolbird-lite/buttons";
+@import "schoolbird-lite/inputs";
+@import "schoolbird-lite/typography";
+@import "schoolbird-lite/misc";
+@import "schoolbird-lite/checkboxes-radio";
+
+
+// components
+@import "schoolbird-lite/navbar";
+@import "schoolbird-lite/page-header";
+@import "schoolbird-lite/dropdown";
+@import "schoolbird-lite/alerts";
+@import "schoolbird-lite/images";
+@import "schoolbird-lite/nucleo-outline";
+@import "schoolbird-lite/tables";
+@import "schoolbird-lite/sidebar-and-main-panel";
+@import "schoolbird-lite/footers";
+@import "schoolbird-lite/fixed-plugin";
+
+// cards
+@import "schoolbird-lite/cards";
+@import "schoolbird-lite/cards/card-plain";
+@import "schoolbird-lite/cards/card-chart";
+@import "schoolbird-lite/cards/card-user";
+@import "schoolbird-lite/cards/card-map";
+@import "schoolbird-lite/cards/card-stats";
+
+@import "schoolbird-lite/responsive";
