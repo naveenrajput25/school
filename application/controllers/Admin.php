@@ -1,17 +1,17 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-/*	
- *	@author 	: Marcos Fermin
- *	PencilCrunch School Management System
- *	marcosdavid1794@gmail.com
+/*  
+ *  @author     : Marcos Fermin
+ *  PencilCrunch School Management System
+ *  marcosdavid1794@gmail.com
  */
 class Admin extends CI_Controller{
     
-	public function __construct(){
-		parent::__construct();
+    public function __construct(){
+        parent::__construct();
 
         /*cache control*/
-		/*$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-		$this->output->set_header('Pragma: no-cache');*/
+        /*$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache');*/
     }
     
     /***default function, redirects to login page if no admin logged in yet***/
@@ -19,6 +19,14 @@ class Admin extends CI_Controller{
         redirect( site_url( 'admin/dashboard' ), 'refresh');
     }
 
+    function all_design() {
+
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');   
+        $page_data['page_name']  = 'all-design';
+        $page_data['page_title'] = get_phrase('all_design');
+        $this->load->view('backend/index', $page_data);
+    }
 
 
     /***session setup***/
@@ -47,19 +55,62 @@ class Admin extends CI_Controller{
     function ownprofile() {
         
         if(isset($_POST['email'])){
+             if(isset($_FILES['image'])){
+                $config['upload_path'] = 'uploads/logo/';
+                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $this->load->library('upload',$config);
+                $this->upload->initialize($config);
+                if( ! $this->upload->do_upload('image') )
+                {
+                    $error = array('error' => $this->upload->display_errors());  
+                       
+                }
+                else
+                {
+                    $u_data =$this->upload->data();
+                    $path=$u_data['file_name'];
+                    $img = base_url().$config['upload_path'].$path;
+                   
+                }
+            }else{
+                $img = 'https://www.schoolbirdapp.com/images/schoolbird-logo-white.png';
+            }
             $data=array(
-                'prefix'     =>$this->input->post('prefix'),
-                'name'       =>$this->input->post('name'),
+                'prefix'     =>$this->input->post('prefix'), 
+                'gender'     =>$this->input->post('gender'),
+                'name'       =>$this->input->post('name').' '.$this->input->post('mname').' '.$this->input->post('lname'),
                 'email'      =>$this->input->post('email'),
                 'mobile'     =>$this->input->post('mobile'),
                 'phone'      =>$this->input->post('phone'),
-                'designation'=>'admin'
+                'profile'    =>$img,
+                'designation'=>'Ownner',
+                'schoolId'   => $_SESSION['schoolId']
             );
-            $this->db->where('schoolId', $_SESSION['schoolId']);
-            $this->db->update('admin', $data);
+             $this->db->insert('admin', $data);
         }
     }
 
+    /***Principle profile setup***/ 
+     function getpreofile(){
+
+    $session =   $this->db->get_where('admin', array('schoolid'=>$_SESSION['schoolId'],'designation'=>'Ownner'))->row();
+
+       $name = explode(' ',$session->name);
+     
+       $data  = array(
+                 'prefix'=> $session->prefix,
+                 'fname' => trim($name[0]),
+                 'mname' => trim($name[1]),
+                 'lname' => trim($name[2]),
+                 'email' => $session->email,
+                 'gender'=> $session->gender,
+                 'mobile'=> $session->mobile,
+                 'phone' => $session->phone,
+                );
+
+            echo json_encode($data);
+               
+     }
     /***Principle profile setup***/
     function Principle() {
         
@@ -182,25 +233,53 @@ class Admin extends CI_Controller{
     
     
     /****MANAGE STUDENTS CLASSWISE*****/
-	function student_add() {
-			
-		$page_data['page_name']  = 'student_add';
-		$page_data['page_title'] = get_phrase('add_student');
-		$this->load->view('backend/index', $page_data);
-	} 
+    function student_add() {
 
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');   
+        $page_data['page_name']  = 'student-add';
+        $page_data['page_title'] = get_phrase('add_student');
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function student_edit( $param2 = '') {
+
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');   
+        $page_data['param2']        =   $param2;
+        $page_data['page_name']  = 'student_edit';
+        $page_data['page_title'] = get_phrase('student_edit');
+        $this->load->view('backend/index', $page_data);
+    }
+
+     /****teacher_add*****/
+    function teacher_add() {
+
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');   
+        $page_data['page_name']  = 'teacher_add';
+        $page_data['page_title'] = get_phrase('add_teachers');
+        $this->load->view('backend/index', $page_data);
+    }
+
+    
     /****MANAGE Timetable*****/
     function Timetable() {
+        
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');
             
-        $page_data['page_name']  = 'student_add';
-        $page_data['page_title'] = get_phrase('add_student');
-        $page_data['class']      =   $this->db->get_where('class' , array('schoolid'=>$_SESSION['schoolId']))->result();
-        $this->load->view('backend/Timetable', $page_data);
+        $page_data['page_name']     = 'Timetable';
+        $page_data['page_title']    = get_phrase('Timetable');
+         $page_data['class']      =   $this->db->get_where('class' , array('schoolid'=>$_SESSION['schoolId']))->result();
+        //$page_data['class_id']  = $class_id;
+
+        $this->load->view('backend/index', $page_data);
     }
 
     /****MANAGE Timetable*****/
     public function Saveatimetable(){
-      print_r($_POST);die;
+      
         $clsaa    = $this->input->post('clsaa');
         $leacture = $this->input->post('leacture');
         $teacher  = $this->input->post('teacher');
@@ -209,18 +288,24 @@ class Admin extends CI_Controller{
         $day      = $leacture[0];
         $leacture = $leacture[1];
         
-
+$tt   = $this->db->get_where('timetable',array('day'=>$day,'classid'=>$clsaa,'schoolid'=>$_SESSION['schoolId']))->row();
+      
         $data = array(
 
             'day'      => $day,
             'classid'  => $clsaa,
             'subjectid'=> $subject[0],
-            'lectureid'=> $leacture,
+            'lectureid'=> $leacture[0],
             'teacherid'=> $teacher[0],
-            'academicyear'=>$acadmic,
+            'schoolId' =>$_SESSION['schoolId'],
             'createtdate'=>date("Y-m-d H:i:s")
-                );
-        $this->db->insert('timetable' , $data);       
+        );
+        if(empty($tt)){
+         $this->db->insert('timetable' , $data);
+        } 
+        else{
+            $this->db->update('timetable' , $data);
+        }      
         
     }
     /****MANAGE Timetable*****/
@@ -232,57 +317,62 @@ class Admin extends CI_Controller{
         $data['getLectures'] = $this->db->get_where('lecture' , array('schoolid'=>$_SESSION['schoolId']))->result();
         $data['getSubjects'] =  $this->db->get_where('subject' , array('schoolid'=>$_SESSION['schoolId'],'class_id'=>$class))->result();
         $data['class']   =$class;
+
         $this->load->view('backend/timetableview',$data);
         
     }
 
-	
-	function student_bulk_add($param1 = '')
-	{   
+    
+    function student_bulk_add($param1 = '')
+    {   
 
-			
-			move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_import.xlsx');
-			// Importing excel sheet for bulk student uploads
+            
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_import.xlsx');
+            // Importing excel sheet for bulk student uploads
              
-			include 'simplexlsx.class.php';
-			
-			$xlsx = new SimpleXLSX('uploads/student_import.xlsx');
-			
-			list($num_cols, $num_rows) = $xlsx->dimension();
-			$f = 0;
-			foreach( $xlsx->rows() as $r ) 
-			{
-				// Ignore the inital name row of excel file
-				if ($f == 0)
-				{
-					$f++;
-					continue;
-				}
-				for( $i=0; $i < $num_cols; $i++ )
-				{  
-					if ($i == 0)	    $data['name']			=	$r[$i];
-					else if ($i == 1)	$data['birthday']		=	$r[$i];
-					else if ($i == 2)	$data['sex']		    =	$r[$i];
-					else if ($i == 3)	$data['address']		=	$r[$i];
-					else if ($i == 4)	$data['phone']			=	$r[$i];
-					else if ($i == 5)	$data['email']			=	$r[$i];
-					else if ($i == 6)	$data['password']		=	$r[$i];
-					else if ($i == 7)	$data['roll']			=	$r[$i];
-                    else if ($i == 8)   $data['studentId']      =   $r[$i];
+            include 'simplexlsx.class.php';
+            
+            $xlsx = new SimpleXLSX('uploads/student_import.xlsx');
+            
+            list($num_cols, $num_rows) = $xlsx->dimension();
+            $f = 0;
+            foreach( $xlsx->rows() as $r ) 
+            {
+                // Ignore the inital name row of excel file
+                if ($f == 0)
+                {
+                    $f++;
+                    continue;
+                }
+                for( $i=0; $i < $num_cols; $i++ )
+                {  
+                    if ($i == 0)        $data['name']           =   $r[$i];
+                    else if ($i == 1)   $data['gender']         =   $r[$i];
+                    else if ($i == 2)   $data['father_name']    =   $r[$i];
+                    else if ($i == 3)   $data['mother_name']    =   $r[$i];
+                    else if ($i == 4)   $data['phone']          =   $r[$i];
+                    else if ($i == 5)   $data['email']          =   $r[$i];
+                    else if ($i == 7)   $data['guardian_name']           =   $r[$i];
+                    else if ($i == 8)   $data['occupation']      =   $r[$i];
+                    else if ($i == 9)   $data['class_id']      =   $r[$i];
+                    else if ($i == 10)  $data['studentId']      =   $r[$i];
+                    else if ($i == 11)  $data['studentId']      =   $r[$i];
+                    else if ($i == 12)  $data['studentId']      =   $r[$i];
+                   else if ($i == 13)   $data['studentId']      =   $r[$i];
                                         $data['schoolid']       =  $_SESSION['schoolId'];
-				}
-				$data['class_id']	=	1;//$this->input->post('class_id');
-				if(!empty($data['name'])){
-				$this->db->insert('student' , $data);
-				}
-			}
-			redirect(base_url() . 'admin/student_information/' . $this->input->post('class_id'), 'refresh');
-		
-		$page_data['page_name']  = 'student_bulk_add';
-		$page_data['page_title'] = get_phrase('add_bulk_student');
-		$this->load->view('backend/index', $page_data);
-	}
-	
+                }
+                $data['class_id']   =   1;//$this->input->post('class_id');
+                if(!empty($data['name'])){
+                $this->db->insert('student' , $data);
+                }
+            }
+            redirect(base_url() . 'admin/student_information/' . $this->input->post('class_id'), 'refresh');
+        
+        $page_data['page_name']  = 'student_bulk_add';
+        $page_data['page_title'] = get_phrase('add_bulk_student');
+        $this->load->view('backend/index', $page_data);
+    }
+    
     // Teacher's Bulk Add
 
     function teachers_bulk_add($param1 = '')
@@ -344,74 +434,329 @@ class Admin extends CI_Controller{
             $this->load->view('backend/index', $page_data);
         }
     }
-	function student_information($class_id = '')
-	{
-		if ($this->session->userdata('admin_login') != 1)
-            redirect('login', 'refresh');
-			
-		$page_data['page_name']  	= 'student_information';
-		$page_data['page_title'] 	= get_phrase('student_information');
-		$page_data['class_id'] 	= $class_id;
-		$this->load->view('backend/index', $page_data);
-	}
-	
-	function student_marksheet($class_id = '')
-	{
-		if ($this->session->userdata('admin_login') != 1)
-            redirect('login', 'refresh');
-			
-		$page_data['page_name']  = 'student_marksheet';
-		$page_data['page_title'] 	= get_phrase('student_marksheet'). " - ".get_phrase('class')." : ".
-											$this->crud_model->get_class_name($class_id);
-		$page_data['class_id'] 	= $class_id;
-		$this->load->view('backend/index', $page_data);
-	}
-	
-    function student($param1 = '', $param2 = '', $param3 = '')
+    function student_information($class_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-        if ($param1 == 'create') {
-            $data['name']       = $this->input->post('name');
-            $data['birthday']   = $this->input->post('birthday');
-            $data['sex']        = $this->input->post('sex');
-            $data['address']    = $this->input->post('address');
-            $data['phone']      = $this->input->post('phone');
-            $data['email']      = $this->input->post('email');
-            $data['password']   = $this->input->post('password');
-            $data['class_id']   = $this->input->post('class_id');
-            if ($this->input->post('section_id') != '') {
-                $data['section_id'] = $this->input->post('section_id');
-            }
-            $data['parent_id']  = $this->input->post('parent_id');
-            $data['roll']       = $this->input->post('roll');
-            $this->db->insert('student', $data);
-            $student_id = $this->db->insert_id();
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $student_id . '.jpg');
-            $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
-            $this->email_model->account_opening_email('student', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
-            redirect(base_url() . 'admin/student_add/' . $data['class_id'], 'refresh');
-        }
-        if ($param2 == 'do_update') {
-            $data['name']        = $this->input->post('name');
-            $data['birthday']    = $this->input->post('birthday');
-            $data['sex']         = $this->input->post('sex');
-            $data['address']     = $this->input->post('address');
-            $data['phone']       = $this->input->post('phone');
-            $data['email']       = $this->input->post('email');
-            $data['class_id']    = $this->input->post('class_id');
-            $data['section_id']  = $this->input->post('section_id');
-            $data['parent_id']   = $this->input->post('parent_id');
-            $data['roll']        = $this->input->post('roll');
             
-            $this->db->where('student_id', $param3);
-            $this->db->update('student', $data);
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $param3 . '.jpg');
-            $this->crud_model->clear_cache();
-            $this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
-            redirect(base_url() . 'admin/student_information/' . $param1, 'refresh');
+        $page_data['page_name']     = 'student_information';
+        $page_data['page_title']    = get_phrase('student_information');
+        $page_data['class_id']  = $class_id;
+        $this->load->view('backend/index', $page_data);
+    }
+    
+    function student_marksheet($class_id = '')
+    {
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');
+            
+        $page_data['page_name']  = 'student_marksheet';
+        $page_data['page_title']    = get_phrase('student_marksheet'). " - ".get_phrase('class')." : ".
+                                            $this->crud_model->get_class_name($class_id);
+        $page_data['class_id']  = $class_id;
+        $this->load->view('backend/index', $page_data);
+    }
+    
+    function student($param1 = '', $param2 = '', $param3 = ''){
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');
+        if ($param1 == 'create') {
+            
+            $this->form_validation->set_rules('regist_no','Registration Number','trim|required|max_length[20]');
+            $this->form_validation->set_rules('joinDate','Date of Joining','trim|required');
+            $this->form_validation->set_rules('name','Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('class_id','Class','required');
+            $this->form_validation->set_rules('section_id','Section','required');
+            $this->form_validation->set_rules('dob','Date of birth','trim|required');
+            $this->form_validation->set_rules('gender','Gender','trim|required');
+            $this->form_validation->set_rules('blood_grp','Blood Group','trim|required');
+            $this->form_validation->set_rules('address','Address','trim|required|max_length[60]');
+            $this->form_validation->set_rules('phone','Phone number','trim|required|max_length[60]');
+            $this->form_validation->set_rules('email','Email','trim|required|valid_email');
+            $this->form_validation->set_rules('f_name','Father Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('m_name','Mother Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('g_name','Guardian Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('occupation','Father Occupation','trim|required|max_length[20]');
+            $this->form_validation->set_rules('city','City','trim|required');
+            $this->form_validation->set_rules('state','State','trim|required');
+            $this->form_validation->set_rules('country','Country','trim|required');
+            $this->form_validation->set_rules('postal_code','Postal Code','trim|required');
+            
+            if (empty($_FILES['userfile']['name']))
+            {
+                $this->form_validation->set_rules('userfile','Profile','required');
+            }
+
+
+            if($this->form_validation->run() == false)
+            { 
+                $this->form_validation->set_message('error', 'This field is required.');
+                $page_data['page_name']  = 'student_add';
+                $page_data['page_title'] = get_phrase('add_student');
+                $this->load->view('backend/index', $page_data);
+            }
+            else
+            {
+                 
+                $data['name']       = $this->input->post('name');
+                $data['birthday']   = $this->input->post('dob');
+                $data['sex']        = $this->input->post('gender');
+                $data['address']    = $this->input->post('address');
+                $data['phone']      = $this->input->post('phone');
+                $data['email']      = $this->input->post('email');
+                // $data['password']   = $this->input->post('password');
+                $data['class_id']   = $this->input->post('class_id');
+                if ($this->input->post('section_id') != '') {
+                    $data['section_id'] = $this->input->post('section_id');
+                }
+                // $data['parent_id']  = $this->input->post('parent_id');
+                // $data['roll']       = $this->input->post('roll');
+
+                $data['registered_no']    = $this->input->post('regist_no');
+                $data['joinDate']     = $this->input->post('joinDate');
+                $data['blood_group']  = $this->input->post('blood_grp');
+                $data['father_name']  = $this->input->post('f_name');
+                $data['mother_name']  = $this->input->post('m_name');
+                $data['guardian_name']= $this->input->post('g_name');
+                $data['occupation']   = $this->input->post('occupation');
+                $data['city']         = $this->input->post('city');
+                $data['state']        = $this->input->post('state');
+                $data['country']      = $this->input->post('country');
+                $data['postal_code']  = $this->input->post('postal_code');
+                $data['schoolid']     = $_SESSION['schoolId'];
+
+            
+
+                $this->db->insert('student', $data);
+                $student_id = $this->db->insert_id();
+                move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $student_id . '.jpg');
+               // $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
+                //$this->email_model->account_opening_email('student', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
+                //redirect(base_url('admin/student-add') , 'refresh');
+            }
+        }
+        if ($param2 == 'doUpdate') {
+
+            $this->form_validation->set_rules('regist_no','Registration Number','trim|required|max_length[20]');
+            $this->form_validation->set_rules('joinDate','Date of Joining','trim|required');
+            $this->form_validation->set_rules('name','Name','trim|required|max_length[20]');
+            //$this->form_validation->set_rules('parent_id','Parent','trim|required');
+            $this->form_validation->set_rules('class_id','Class','required');
+            $this->form_validation->set_rules('section_id','Section','required');
+            //$this->form_validation->set_rules('roll','Roll number','trim|required|max_length[20]');
+            $this->form_validation->set_rules('dob','Date of birth','trim|required');
+            $this->form_validation->set_rules('gender','Gender','trim|required');
+            $this->form_validation->set_rules('blood_grp','Blood Group','trim|required');
+            $this->form_validation->set_rules('address','Address','trim|required|max_length[60]');
+            $this->form_validation->set_rules('phone','Phone number','trim|required|max_length[60]');
+            $this->form_validation->set_rules('email','Email','trim|required|valid_email');
+            $this->form_validation->set_rules('f_name','Father Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('m_name','Mother Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('g_name','Guardian Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('occupation','Father Occupation','trim|required|max_length[20]');
+            $this->form_validation->set_rules('city','City','trim|required');
+            $this->form_validation->set_rules('state','State','trim|required');
+            $this->form_validation->set_rules('country','Country','trim|required');
+            $this->form_validation->set_rules('postal_code','Postal Code','trim|required');
+            
+            // if (empty($_FILES['userfile']['name']))
+            // {
+            //     $this->form_validation->set_rules('userfile','Profile','required');
+            // }
+
+
+            if($this->form_validation->run() == false)
+            { 
+                $this->form_validation->set_message('error', 'This field is required.');
+               $page_data['param2']        =   $param2;
+               $page_data['page_name']  = 'student_edit';
+               $page_data['page_title'] = get_phrase('student_edit');
+               $this->load->view('backend/index', $page_data);
+            }
+            else
+            { 
+                $data['name']       = $this->input->post('name');
+                $data['birthday']   = $this->input->post('dob');
+                $data['sex']        = $this->input->post('gender');
+                $data['address']    = $this->input->post('address');
+                $data['phone']      = $this->input->post('phone');
+                $data['email']      = $this->input->post('email');
+                $data['class_id']    = $this->input->post('class_id');
+                $data['section_id']  = $this->input->post('section_id');
+                // $data['parent_id']  = $this->input->post('parent_id');
+                // $data['roll']       = $this->input->post('roll');
+
+                $data['registered_no']    = $this->input->post('regist_no');
+                $data['joinDate']     = $this->input->post('joinDate');
+                $data['blood_group']  = $this->input->post('blood_grp');
+                $data['father_name']  = $this->input->post('f_name');
+                $data['mother_name']  = $this->input->post('m_name');
+                $data['guardian_name']= $this->input->post('g_name');
+                $data['occupation']   = $this->input->post('occupation');
+                $data['city']         = $this->input->post('city');
+                $data['state']        = $this->input->post('state');
+                $data['country']      = $this->input->post('country');
+                $data['postal_code']  = $this->input->post('postal_code');
+                $data['schoolid']     = $_SESSION['schoolId'];
+
+                
+                
+                $this->db->where('student_id', $param3);
+                $this->db->update('student', $data);
+                move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $param3 . '.jpg');
+                $this->crud_model->clear_cache();
+                $this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
+                redirect(base_url() . 'admin/student_information' , 'refresh'); 
+            }
         } 
-		
+        
+        if ($param2 == 'delete') {
+            $this->db->where('student_id', $param3);
+            $this->db->delete('student');
+            $this->session->set_flashdata('flash_message' , get_phrase('data_deleted'));
+            redirect(base_url() . 'admin/student_information/' . $param1, 'refresh');
+        }
+    } 
+    function teachers($param1 = '', $param2 = '', $param3 = ''){
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');
+        if ($param1 == 'create') {
+         
+            $this->form_validation->set_rules('name','Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('class_id','Class','required');
+            $this->form_validation->set_rules('section_id','Section','required');
+            $this->form_validation->set_rules('gender','Gender','trim|required');
+            $this->form_validation->set_rules('dob','Date of birth','trim|required');
+            $this->form_validation->set_rules('blood_grp','Blood Group','trim|required');
+            $this->form_validation->set_rules('phone','Phone number','trim|required|max_length[60]');
+            $this->form_validation->set_rules('email','Email','trim|required|valid_email');
+            $this->form_validation->set_rules('f_name','Father Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('m_name','Mother Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('city','City','trim|required');
+            $this->form_validation->set_rules('state','State','trim|required');
+            $this->form_validation->set_rules('country','Country','trim|required');
+            $this->form_validation->set_rules('postal_code','Postal Code','trim|required');
+            
+            if (empty($_FILES['userfile']['name']))
+            {
+                $this->form_validation->set_rules('userfile','Profile','required');
+            }
+
+
+            if($this->form_validation->run() == false)
+            {    
+                $this->form_validation->set_message('error', 'This field is required.');
+                $page_data['page_name']  = 'student_add';
+                $page_data['page_title'] = get_phrase('add_student');
+                $this->load->view('backend/index', $page_data);
+            }
+            else
+            {
+                
+                $data['name']       = trim($this->input->post('name'));
+                $data['class_id']   = trim($this->input->post('class_id'));
+                $data['gender']     = trim($this->input->post('gender'));
+                $data['birthday']   = trim($this->input->post('dob'));
+                $data['blood_group']= trim($this->input->post('blood_grp'));
+                $data['email']      = trim($this->input->post('email'));
+                $data['phone']      = trim($this->input->post('phone'));
+                $data['Father']     = trim($this->input->post('f_name'));
+                $data['Mother']     = trim($this->input->post('m_name'));
+                $data['City']       = trim($this->input->post('city'));
+                $data['State']      = trim($this->input->post('state'));
+                $data['country']    = trim($this->input->post('country'));
+                $data['postal_code']= trim($this->input->post('postal_code'));
+
+               if ($this->input->post('section_id') != '') {
+                    $data['section_id'] = trim($this->input->post('section_id'));
+                }
+                $data['schoolid']     = $_SESSION['schoolId'];
+
+            
+                 
+                $this->db->insert('teacher', $data);
+                $teacher_id = $this->db->insert_id();
+                move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_img/' . $teacher_id . '.jpg'); 
+               // $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
+                //$this->email_model->account_opening_email('student', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
+                //redirect(base_url('admin/student-add') , 'refresh');
+            }
+        }
+        if ($param2 == 'doUpdate') {
+
+            $this->form_validation->set_rules('regist_no','Registration Number','trim|required|max_length[20]');
+            $this->form_validation->set_rules('joinDate','Date of Joining','trim|required');
+            $this->form_validation->set_rules('name','Name','trim|required|max_length[20]');
+            //$this->form_validation->set_rules('parent_id','Parent','trim|required');
+            $this->form_validation->set_rules('class_id','Class','required');
+            $this->form_validation->set_rules('section_id','Section','required');
+            //$this->form_validation->set_rules('roll','Roll number','trim|required|max_length[20]');
+            $this->form_validation->set_rules('dob','Date of birth','trim|required');
+            $this->form_validation->set_rules('gender','Gender','trim|required');
+            $this->form_validation->set_rules('blood_grp','Blood Group','trim|required');
+            $this->form_validation->set_rules('address','Address','trim|required|max_length[60]');
+            $this->form_validation->set_rules('phone','Phone number','trim|required|max_length[60]');
+            $this->form_validation->set_rules('email','Email','trim|required|valid_email');
+            $this->form_validation->set_rules('f_name','Father Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('m_name','Mother Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('g_name','Guardian Name','trim|required|max_length[20]');
+            $this->form_validation->set_rules('occupation','Father Occupation','trim|required|max_length[20]');
+            $this->form_validation->set_rules('city','City','trim|required');
+            $this->form_validation->set_rules('state','State','trim|required');
+            $this->form_validation->set_rules('country','Country','trim|required');
+            $this->form_validation->set_rules('postal_code','Postal Code','trim|required');
+            
+            // if (empty($_FILES['userfile']['name']))
+            // {
+            //     $this->form_validation->set_rules('userfile','Profile','required');
+            // }
+
+
+            if($this->form_validation->run() == false)
+            { 
+                $this->form_validation->set_message('error', 'This field is required.');
+               $page_data['param2']        =   $param2;
+               $page_data['page_name']  = 'student_edit';
+               $page_data['page_title'] = get_phrase('student_edit');
+               $this->load->view('backend/index', $page_data);
+            }
+            else
+            { 
+                $data['name']       = $this->input->post('name');
+                $data['birthday']   = $this->input->post('dob');
+                $data['sex']        = $this->input->post('gender');
+                $data['address']    = $this->input->post('address');
+                $data['phone']      = $this->input->post('phone');
+                $data['email']      = $this->input->post('email');
+                $data['class_id']    = $this->input->post('class_id');
+                $data['section_id']  = $this->input->post('section_id');
+                // $data['parent_id']  = $this->input->post('parent_id');
+                // $data['roll']       = $this->input->post('roll');
+
+                $data['registered_no']    = $this->input->post('regist_no');
+                $data['joinDate']     = $this->input->post('joinDate');
+                $data['blood_group']  = $this->input->post('blood_grp');
+                $data['father_name']  = $this->input->post('f_name');
+                $data['mother_name']  = $this->input->post('m_name');
+                $data['guardian_name']= $this->input->post('g_name');
+                $data['occupation']   = $this->input->post('occupation');
+                $data['city']         = $this->input->post('city');
+                $data['state']        = $this->input->post('state');
+                $data['country']      = $this->input->post('country');
+                $data['postal_code']  = $this->input->post('postal_code');
+                $data['schoolid']     = $_SESSION['schoolId'];
+
+                
+                
+                $this->db->where('student_id', $param3);
+                $this->db->update('student', $data);
+                move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $param3 . '.jpg');
+                $this->crud_model->clear_cache();
+                $this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
+                redirect(base_url() . 'admin/student_information' , 'refresh'); 
+            }
+        } 
+        
         if ($param2 == 'delete') {
             $this->db->where('student_id', $param3);
             $this->db->delete('student');
@@ -425,12 +770,12 @@ class Admin extends CI_Controller{
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
         if ($param1 == 'create') {
-            $data['name']        			= $this->input->post('name');
-            $data['email']       			= $this->input->post('email');
-            $data['password']    			= $this->input->post('password');
-            $data['phone']       			= $this->input->post('phone');
-            $data['address']     			= $this->input->post('address');
-            $data['profession']  			= $this->input->post('profession');
+            $data['name']                   = $this->input->post('name');
+            $data['email']                  = $this->input->post('email');
+            $data['password']               = $this->input->post('password');
+            $data['phone']                  = $this->input->post('phone');
+            $data['address']                = $this->input->post('address');
+            $data['profession']             = $this->input->post('profession');
             $this->db->insert('parent', $data);
             $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
             $this->email_model->account_opening_email('parent', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
@@ -453,11 +798,11 @@ class Admin extends CI_Controller{
             $this->session->set_flashdata('flash_message' , get_phrase('data_deleted'));
             redirect(base_url() . 'admin/parent/', 'refresh');
         }
-        $page_data['page_title'] 	= get_phrase('all_parents');
+        $page_data['page_title']    = get_phrase('all_parents');
         $page_data['page_name']  = 'parent';
         $this->load->view('backend/index', $page_data);
     }
-	
+    
     
     /****MANAGE TEACHERS*****/
     function teacher($param1 = '', $param2 = '', $param3 = '')
@@ -541,7 +886,7 @@ class Admin extends CI_Controller{
             $this->session->set_flashdata('flash_message' , get_phrase('data_deleted'));
             redirect(base_url() . 'admin/subject/'.$param3, 'refresh');
         }
-		 $page_data['class_id']   = $param1;
+         $page_data['class_id']   = $param1;
         $page_data['subjects']   = $this->db->get_where('subject' , array('class_id' => $param1))->result_array();
         $page_data['page_name']  = 'subject';
         $page_data['page_title'] = get_phrase('manage_subject');
@@ -847,15 +1192,15 @@ class Admin extends CI_Controller{
         $page_data['page_title'] = get_phrase('manage_class_routine');
         $this->load->view('backend/index', $page_data);
     }
-	
-	/****** DAILY ATTENDANCE *****************/
-	function manage_attendance($date='',$month='',$year='',$class_id='')
-	{
-		if($this->session->userdata('admin_login')!=1)redirect('login' , 'refresh');
-		
-		if($_POST)
-		{
-			// Loop all the students of $class_id
+    
+    /****** DAILY ATTENDANCE *****************/
+    function manage_attendance($date='',$month='',$year='',$class_id='')
+    {
+        if($this->session->userdata('admin_login')!=1)redirect('login' , 'refresh');
+        
+        if($_POST)
+        {
+            // Loop all the students of $class_id
             $students   =   $this->db->get_where('student', array('class_id' => $class_id))->result_array();
             foreach ($students as $row)
             {
@@ -867,25 +1212,25 @@ class Admin extends CI_Controller{
                 $this->db->update('attendance' , array('status' => $attendance_status));
             }
 
-			$this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
-			redirect(base_url() . 'admin/manage_attendance/'.$date.'/'.$month.'/'.$year.'/'.$class_id , 'refresh');
-		}
-        $page_data['date']     =	$date;
-        $page_data['month']    =	$month;
-        $page_data['year']     =	$year;
-        $page_data['class_id'] =	$class_id;
-		
-        $page_data['page_name']  =	'manage_attendance';
-        $page_data['page_title'] =	get_phrase('manage_daily_attendance');
-		$this->load->view('backend/index', $page_data);
-	}
-	function attendance_selector()
-	{
-		redirect(base_url() . 'admin/manage_attendance/'.$this->input->post('date').'/'.
-					$this->input->post('month').'/'.
-						$this->input->post('year').'/'.
-							$this->input->post('class_id') , 'refresh');
-	}
+            $this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
+            redirect(base_url() . 'admin/manage_attendance/'.$date.'/'.$month.'/'.$year.'/'.$class_id , 'refresh');
+        }
+        $page_data['date']     =    $date;
+        $page_data['month']    =    $month;
+        $page_data['year']     =    $year;
+        $page_data['class_id'] =    $class_id;
+        
+        $page_data['page_name']  =  'manage_attendance';
+        $page_data['page_title'] =  get_phrase('manage_daily_attendance');
+        $this->load->view('backend/index', $page_data);
+    }
+    function attendance_selector()
+    {
+        redirect(base_url() . 'admin/manage_attendance/'.$this->input->post('date').'/'.
+                    $this->input->post('month').'/'.
+                        $this->input->post('year').'/'.
+                            $this->input->post('class_id') , 'refresh');
+    }
     /******MANAGE BILLING / INVOICES WITH STATUS*****/
     function invoice($param1 = '', $param2 = '', $param3 = '')
     {
@@ -1301,7 +1646,7 @@ class Admin extends CI_Controller{
             redirect(base_url() . 'login', 'refresh');
         
         if ($param1 == 'do_update') {
-			/* 
+            /* 
             $data['description'] = $this->input->post('system_name');
             $this->db->where('type' , 'system_name');
             $this->db->update('settings' , $data);
@@ -1345,7 +1690,7 @@ class Admin extends CI_Controller{
             $data['description'] = $this->input->post('session');
             $this->db->where('type' , 'session');
             $this->db->update('settings' , $data);
-			
+            
             $this->session->set_flashdata('flash_message' , get_phrase('data_updated')); 
             redirect(base_url() . 'admin/system_settings/', 'refresh');*/
         }
@@ -1428,61 +1773,61 @@ class Admin extends CI_Controller{
     function manage_language($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
-			redirect(base_url() . 'login', 'refresh');
-		
-		if ($param1 == 'edit_phrase') {
-			$page_data['edit_profile'] 	= $param2;	
-		}
-		if ($param1 == 'update_phrase') {
-			$language	=	$param2;
-			$total_phrase	=	$this->input->post('total_phrase');
-			for($i = 1 ; $i < $total_phrase ; $i++)
-			{
-				//$data[$language]	=	$this->input->post('phrase').$i;
-				$this->db->where('phrase_id' , $i);
-				$this->db->update('language' , array($language => $this->input->post('phrase'.$i)));
-			}
-			redirect(base_url() . 'admin/manage_language/edit_phrase/'.$language, 'refresh');
-		}
-		if ($param1 == 'do_update') {
-			$language        = $this->input->post('language');
-			$data[$language] = $this->input->post('phrase');
-			$this->db->where('phrase_id', $param2);
-			$this->db->update('language', $data);
-			$this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
-			redirect(base_url() . 'admin/manage_language/', 'refresh');
-		}
-		if ($param1 == 'add_phrase') {
-			$data['phrase'] = $this->input->post('phrase');
-			$this->db->insert('language', $data);
-			$this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
-			redirect(base_url() . 'admin/manage_language/', 'refresh');
-		}
-		if ($param1 == 'add_language') {
-			$language = $this->input->post('language');
-			$this->load->dbforge();
-			$fields = array(
-				$language => array(
-					'type' => 'LONGTEXT'
-				)
-			);
-			$this->dbforge->add_column('language', $fields);
-			
-			$this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
-			redirect(base_url() . 'admin/manage_language/', 'refresh');
-		}
-		if ($param1 == 'delete_language') {
-			$language = $param2;
-			$this->load->dbforge();
-			$this->dbforge->drop_column('language', $language);
-			$this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
-			
-			redirect(base_url() . 'admin/manage_language/', 'refresh');
-		}
-		$page_data['page_name']        = 'manage_language';
-		$page_data['page_title']       = get_phrase('manage_language');
-		//$page_data['language_phrases'] = $this->db->get('language')->result_array();
-		$this->load->view('backend/index', $page_data);	
+            redirect(base_url() . 'login', 'refresh');
+        
+        if ($param1 == 'edit_phrase') {
+            $page_data['edit_profile']  = $param2;  
+        }
+        if ($param1 == 'update_phrase') {
+            $language   =   $param2;
+            $total_phrase   =   $this->input->post('total_phrase');
+            for($i = 1 ; $i < $total_phrase ; $i++)
+            {
+                //$data[$language]  =   $this->input->post('phrase').$i;
+                $this->db->where('phrase_id' , $i);
+                $this->db->update('language' , array($language => $this->input->post('phrase'.$i)));
+            }
+            redirect(base_url() . 'admin/manage_language/edit_phrase/'.$language, 'refresh');
+        }
+        if ($param1 == 'do_update') {
+            $language        = $this->input->post('language');
+            $data[$language] = $this->input->post('phrase');
+            $this->db->where('phrase_id', $param2);
+            $this->db->update('language', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
+            redirect(base_url() . 'admin/manage_language/', 'refresh');
+        }
+        if ($param1 == 'add_phrase') {
+            $data['phrase'] = $this->input->post('phrase');
+            $this->db->insert('language', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
+            redirect(base_url() . 'admin/manage_language/', 'refresh');
+        }
+        if ($param1 == 'add_language') {
+            $language = $this->input->post('language');
+            $this->load->dbforge();
+            $fields = array(
+                $language => array(
+                    'type' => 'LONGTEXT'
+                )
+            );
+            $this->dbforge->add_column('language', $fields);
+            
+            $this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
+            redirect(base_url() . 'admin/manage_language/', 'refresh');
+        }
+        if ($param1 == 'delete_language') {
+            $language = $param2;
+            $this->load->dbforge();
+            $this->dbforge->drop_column('language', $language);
+            $this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
+            
+            redirect(base_url() . 'admin/manage_language/', 'refresh');
+        }
+        $page_data['page_name']        = 'manage_language';
+        $page_data['page_title']       = get_phrase('manage_language');
+        //$page_data['language_phrases'] = $this->db->get('language')->result_array();
+        $this->load->view('backend/index', $page_data); 
     }
     
     /*****BACKUP / RESTORE / DELETE DATA PAGE**********/

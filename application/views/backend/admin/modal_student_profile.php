@@ -37,6 +37,20 @@ foreach($student_info as $row):?>
 			<div class="">
             		<br>
                 <table class="table table-bordered">
+
+                    <?php if($row['registered_no'] != ''):?>
+                    <tr>
+                        <td>Registered Number</td>
+                        <td><b><?php echo $row['registered_no'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+                    <?php if($row['joinDate'] != ''):?>
+                    <tr>
+                        <td>Date of Joining</td>
+                        <td><b><?php echo $row['joinDate'];?></b></td>
+                    </tr>
+                    <?php endif;?>
                 
                     <?php if($row['class_id'] != ''):?>
                     <tr>
@@ -52,32 +66,30 @@ foreach($student_info as $row):?>
                     </tr>
                     <?php endif;?>
                 
-                    <?php if($row['roll'] != ''):?>
+                    <!-- <?php //if($row['roll'] != ''):?>
                     <tr>
                         <td>Roll</td>
-                        <td><b><?php echo $row['roll'];?></b></td>
+                        <td><b><?php //echo $row['roll'];?></b></td>
                     </tr>
-                    <?php endif;?>
-                
-                    <?php if($row['birthday'] != ''):?>
-                    <tr>
-                        <td>Birthday</td>
-                        <td><b><?php echo $row['birthday'];?></b></td>
-                    </tr>
-                    <?php endif;?>
-                
+                    <?php //endif;?> -->
                     <?php if($row['sex'] != ''):?>
                     <tr>
                         <td>Gender</td>
                         <td><b><?php echo $row['sex'];?></b></td>
                     </tr>
                     <?php endif;?>
-                
-                
-                    <?php if($row['phone'] != ''):?>
+
+                    <?php if($row['birthday'] != ''):?>
                     <tr>
-                        <td>Phone</td>
-                        <td><b><?php echo $row['phone'];?></b></td>
+                        <td>Date of Birth</td>
+                        <td><b><?php echo $row['birthday'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+                    <?php if($row['blood_group'] != ''):?>
+                    <tr>
+                        <td>Blood Group</td>
+                        <td><b><?php echo $row['blood_group'];?></b></td>
                     </tr>
                     <?php endif;?>
                 
@@ -88,6 +100,42 @@ foreach($student_info as $row):?>
                     </tr>
                     <?php endif;?>
                 
+                    <?php if($row['phone'] != ''):?>
+                    <tr>
+                        <td>Phone Number</td>
+                        <td><b><?php echo $row['phone'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+                    <?php if($row['father_name'] != ''):?>
+                    <tr>
+                        <td>Father Name</td>
+                        <td><b><?php echo $row['father_name'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+                    <?php if($row['mother_name'] != ''):?>
+                    <tr>
+                        <td>Mother Name</td>
+                        <td><b><?php echo $row['mother_name'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+
+                    <?php if($row['guardian_name'] != ''):?>
+                    <tr>
+                        <td>Guardian Name</td>
+                        <td><b><?php echo $row['guardian_name'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+                    <?php if($row['occupation'] != ''):?>
+                    <tr>
+                        <td>Father Occupation</td>
+                        <td><b><?php echo $row['occupation'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
                     <?php if($row['address'] != ''):?>
                     <tr>
                         <td>Address</td>
@@ -95,16 +143,45 @@ foreach($student_info as $row):?>
                         </td>
                     </tr>
                     <?php endif;?>
-                    <?php if($row['parent_id'] != ''):?>
+
+                    <?php if($row['city'] != ''):?>
+                    <tr>
+                        <td>City</td>
+                        <td><b><?php echo $row['city'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+
+                    <?php if($row['state'] != ''):?>
+                    <tr>
+                        <td>State</td>
+                        <td><b><?php echo $row['state'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+                    <?php if($row['country'] != ''):?>
+                    <tr>
+                        <td>Country</td>
+                        <td><b><?php echo $row['country'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+                    <?php if($row['postal_code'] != ''):?>
+                    <tr>
+                        <td>Postal Code</td>
+                        <td><b><?php echo $row['postal_code'];?></b></td>
+                    </tr>
+                    <?php endif;?>
+                
+                
+                    
+                    <!-- <?php //if($row['parent_id'] != ''):?>
                     <tr>
                         <td>Parent</td>
-                        <td><b><?php echo $this->db->get_where('parent' , array('parent_id' => $row['parent_id']))->row()->name;?></b></td>
+                        <td><b><?php //echo $this->db->get_where('parent' , array('parent_id' => $row['parent_id']))->row()->name;?></b></td>
                     </tr>
                     <tr>
                         <td>Parent Phone</td>
-                        <td><b><?php echo $this->db->get_where('parent' , array('parent_id' => $row['parent_id']))->row()->phone;?></b></td>
+                        <td><b><?php //echo $this->db->get_where('parent' , array('parent_id' => $row['parent_id']))->row()->phone;?></b></td>
                     </tr>
-                    <?php endif;?>
+                    <?php //endif;?> -->
                     
                 </table>
 			</div>

@@ -184,7 +184,8 @@ div#redips-drag th {
 
                 </div>  
                 <input type="text" style="display: none;" class="try" value="<?php echo $days[$k];?>,<?php echo $lectures->id;?>" name="">
-                 <span style="font-size:12px;"id="step1Content"  class="label label-default ">
+               
+                 <span style="font-size:12px;"id="step1Content"  class="label label-default">
                  
                      Teachers
                   </span>
@@ -208,7 +209,7 @@ div#redips-drag th {
 
         </tbody>
       </table>
-       <div id="message">Drag school subjects to the timetable (clone subjects with SHIFT key)</div>
+      
        <div id="alert" style="display: none;"><div class="alert alert-success" role="alert">Data update successfuly</div></div>
   <div class="button_container">
     <input type="button" value="Save" class="button" onclick="redips.save()" title="Save timetable"/>
@@ -321,14 +322,11 @@ div#redips-drag th {
                    
                       var selectBox = document.getElementById("class");
                       var selectedclass = selectBox.options[selectBox.selectedIndex].value;
-
-                      
+                      var data = {leacture:fruits,teacher:teacher1,subject:subject1,clsaa:selectedclass};
                        $.ajax({
                           type: "POST",
-                          data:{leacture:fruits,teacher:teacher1,subject:subject1,clsaa:selectedclass},
-                          processData: false,
-                          contentType: false,
-                          url: "<?php echo base_url('admin/Saveatimetable');?>",
+                          data:data,
+                         url: "<?php echo base_url('admin/Saveatimetable');?>",
                           success:function(data){
                             console.log(data);
                             fruits.pop();

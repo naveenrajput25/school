@@ -100,25 +100,13 @@
               dataType: 'json',
               processData: false,
               contentType: false,
-              error: function()
-            {
-              alert("An error occoured!");
-            },
+           
             success: function(response)
             {
               // Login status [success|invalid]
               var login_status = response.login_status;
                 
-              setTimeout(function()
-              {
-                // If login is invalid, we store the 
-                if(login_status == 'invalid')
-                {
-                  $(".login-page").removeClass('logging-in');
-                  neonLogin.resetProgressBar(true);
-                }
-                else
-                if(login_status == 'success')
+              if(login_status == 'success')
                 {
                   // Redirect to login page
                   setTimeout(function()
@@ -133,8 +121,6 @@
                     window.location.href = redirect_url;
                   }, 400);
                 }
-                
-              }, 1000);
             }
           })
       });

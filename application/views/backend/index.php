@@ -8,6 +8,11 @@
 	$skin_colour        =   $this->db->get_where('settings')->row()->skin_colour;
 	/*$active_sms_service =   $this->db->get_where('settings' , array('type'=>'active_sms_service'))->row()->description;*/
 	?>
+<meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon.png">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />	
+
 <title><?php echo $page_title;?> | <?php echo $system_title;?></title>
     
 	

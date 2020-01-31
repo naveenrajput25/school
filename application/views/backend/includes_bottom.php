@@ -1,9 +1,9 @@
 <!--   Core JS Files   -->
-  <script src="<?php echo base_url();?>assets/js/core/jquery.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
   <script src="<?php echo base_url();?>assets/js/core/popper.min.js"></script>
   <script src="<?php echo base_url();?>assets/js/core/bootstrap.min.js"></script>
   <script src="<?php echo base_url();?>assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-
+ <script src="<?php echo base_url();?>assets/js/schoolbird-lite.js?v=2.0.0" type="text/javascript"></script>
   <!--   datepicker JS Files   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
@@ -18,26 +18,29 @@
   <!--  Notifications Plugin    -->
   <script src="<?php echo base_url();?>assets/js/plugins/bootstrap-notify.js"></script>
    <script src="<?php echo base_url();?>assets/js/custom.js"></script>
+
+   <!-- Js for validation -->
+<!--    <script src="<?php //echo base_url();?>assets/js/jquery.validate.min.js"></script> -->
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="<?php echo base_url();?>assets/js/schoolbird-lite.js?v=2.0.0" type="text/javascript"></script>
+ 
   
 
 
 <!-- new js included -->
 
-<!--   <script src="<?php //echo site_url('assets/js1/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js'); ?>"></script>
-  <script src="<?php //echo site_url('assets/js1/toastr.js'); ?>"></script>
+  <script src="<?php echo site_url('assets/js1/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js'); ?>"></script>
+  <script src="<?php echo site_url('assets/js1/toastr.js'); ?>"></script>
   
     
-    <script src="<?php //echo site_url('assets/js1/fileinput.js'); ?>"></script>
+    <script src="<?php echo site_url('assets/js1/fileinput.js'); ?>"></script>
     
-    <script src="<?php //echo site_url('assets/js1/jquery.dataTables.min.js'); ?>"></script>
-  <script src="<?php //echo site_url('assets/js1/datatables/TableTools.min.js'); ?>"></script>
-  <script src="<?php //echo site_url('assets/js1/datatables/jquery.dataTables.columnFilter.js'); ?>"></script>
-  <script src="<?php //echo site_url('assets/js1/datatables/lodash.min.js'); ?>"></script>
+    <script src="<?php echo site_url('assets/js1/jquery.dataTables.min.js'); ?>"></script>
+  <script src="<?php echo site_url('assets/js1/datatables/TableTools.min.js'); ?>"></script>
+  <script src="<?php echo site_url('assets/js1/datatables/jquery.dataTables.columnFilter.js'); ?>"></script>
+  <script src="<?php echo site_url('assets/js1/datatables/lodash.min.js'); ?>"></script>
   
   
-  <script src="<?php //echo site_url('assets/js1/neon-chat.js'); ?>"></script> -->
+  <script src="<?php echo site_url('assets/js1/neon-chat.js'); ?>"></script>
  
 
 
@@ -58,20 +61,15 @@
   {
     
 
-    var datatable = $("#table_export")
-    .dataTable();
+    var datatable = $("#table_export").dataTable();
     
     $(".dataTables_wrapper select").select2({
       minimumResultsForSearch: -1
     });
   });
     
-</script>
 
-
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
+   
 </script>
 <!-- new js included -->
 

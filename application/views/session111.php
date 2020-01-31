@@ -45,7 +45,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
   <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="">
-School Owner Profile
+Owner Profile
 </a>
  
      
@@ -54,23 +54,7 @@ School Owner Profile
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
       <div class="row mt-4 mb-4">
-	  <div class="col-md-4 ">
-            <div class="form-group">
-              <div class="avatar-upload">
-                <div class="avatar-edit">
-                  <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-                  <label for="imageUpload"></label>
-                </div>
-                <div class="avatar-preview">
-                  <div id="imagePreview" style="background-image: url(../assets/img/profile-picture.jpg);"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-8 ">
-		     <div class="row">
-			
-                    <div class="col-md-4 ">
+                    <div class="col-md-3 ">
           
           <div class="form-group">
               <label for="sel1">Salutation</label>
@@ -92,25 +76,25 @@ School Owner Profile
           </div>
                    
                     </div>
-                    <div class="col-md-8 ">
+                    <div class="col-md-3 ">
                       <div class="form-group">
                         <label>Owner First Name</label>
                         <input name="fname" id="fname" type="text" class="form-control"  value="" required>
                       </div>
                     </div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label> Middle Name</label>
                         <input type="text" id="mname" name="mname" class="form-control" value="">
                       </div>
                     </div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label> Last Name</label>
                         <input type="text" id="lname" name="lname" class="form-control"  value="" required>
                       </div>
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-2 ">
           <div class="form-group">
                                 <label>Gender </label>
                       <select name="sex"  id="pgenders"class="form-control" id="gender" > 
@@ -122,26 +106,24 @@ School Owner Profile
                               <div class="error"></div>
                             </div>
           </div>
-                    <div class="col-md-8 ">
+                    <div class="col-md-4 ">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Email </label>
                         <input type="email" id="email" name="email" class="form-control"  required>
                       </div>
                     </div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label for="exampleInputMobile">Mobile </label>
                         <input type="number"name="mobile" id="mobile" class="form-control"  required>
                       </div>
                     </div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label for="exampleInputPhone">Phone No </label>
                         <input type="number"name="phone" id="phone"class="form-control">
                       </div>
                     </div>
-					</div>
-			</div>
                   </div>
               <div class="mr-3 mb-3 pull-right">
                
@@ -165,29 +147,14 @@ School Owner Profile
                  <div class="checkbox checkbox-primary">
             <input id="checkbox2" value="" type="checkbox" checked="">
             <label for="checkbox2">
-        Same As School Owner Profile
+        Same As Owner Profile
                         </label>
       </div>
        
         </div>
         </div>
   <div class="row mt-4 mb-4">
-  <div class="col-md-4 ">
-            <div class="form-group">
-              <div class="avatar-upload">
-                <div class="avatar-edit">
-                  <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-                  <label for="imageUpload"></label>
-                </div>
-                <div class="avatar-preview">
-                  <div id="imagePreview" style="background-image: url(../assets/img/profile-picture.jpg);"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-8 ">
-		     <div class="row">
-			 <div class="col-md-4">
+                    <div class="col-md-3 ">
           
           <div class="form-group">
               <label for="sel1">Salutation</label>
@@ -206,11 +173,13 @@ School Owner Profile
                   
                       <option value="Ofc"> Ofc (Officer) </option> 
                                     </select>
-               
+                  
+                  <div class="valid-feedback"></div>
+                  <div class="invalid-feedback">Please add Salutation. </div>
           </div>
                    
                     </div>
-                    <div class="col-md-8 ">
+                    <div class="col-md-3 ">
                       <div class="form-group">
                         <label>Principal First Name</label>
                         <input type="text" id="pfname" value="" class="form-control" value="" required>
@@ -218,21 +187,23 @@ School Owner Profile
             <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add Principal First Name. </div>
                     </div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label> Middle Name</label>
                         <input type="text"id="pmname"  value=""class="form-control"  value="">
                       </div>
             
                     </div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label> Last Name</label>
                         <input type="text"id="plname" value="" class="form-control"  value="" required>
                       </div>
-            
+            <div class="valid-feedback"></div>
+          <div class="invalid-feedback">Please add Last Name. </div>
                     </div>
-					 <div class="col-md-4 ">
+          
+          <div class="col-md-2 ">
           <div class="form-group">
                                 <label>Gender </label>
                       <select name="sex" id="prig" value=""class="form-control" > 
@@ -244,32 +215,31 @@ School Owner Profile
                              
                             </div>
           </div>
-                    <div class="col-md-8 ">
+                    <div class="col-md-4 ">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Email </label>
                         <input type="email"id="pemail" value="" class="form-control" required>
                       </div>
-           
+            <div class="valid-feedback"></div>
+          <div class="invalid-feedback">Please add a Valid Email. </div>
                     </div>
-					<div class="col-md-6 ">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label for="exampleInputMobile">Mobile </label>
                         <input type="number"id="pmobile" value="" class="form-control" required>
                       </div>
-          
+            <div class="valid-feedback"></div>
+          <div class="invalid-feedback">Please add Mobile. </div>
                     </div>
-          <div class="col-md-6">
+          <div class="col-md-3 ">
                       <div class="form-group">
                         <label for="exampleInputPhone">Phone Number </label>
                         <input type="number"id="pphone"  value="" class="form-control" >
                       </div>
                     </div>
-			 </div>
-			</div>
-                  
                   </div>
               <div class="mr-3 mb-3 pull-right">
-  <button type="button" id="next3"class="btn btn-outline-primary btn-round submit"> Save</button>
+  <button type="button" id="next3" class="btn btn-outline-primary btn-round submit"> Save</button>
        </div>
       </div>
     </div>
@@ -294,7 +264,7 @@ School Owner Profile
                   <label for="imageUpload"></label>
                 </div>
                 <div class="avatar-preview">
-                  <div id="imagePreview" style="background-image: url(../assets/img/school-logo.jpg);"></div>
+                  <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);"></div>
                 </div>
               </div>
             </div>
@@ -808,6 +778,7 @@ School Owner Profile
   </div>
 
 
+ 
  <script>
  
  $(function() {
@@ -984,36 +955,34 @@ $(".previous").click(function(){
     });
 
        $('#Owner').click(function(){
-       var formData = new FormData();
-
-     
-        formData.append('prefix',$('#prefix').val());
-        formData.append('gender',$('#pgenders').val());
-        formData.append('name',$('#fname').val());
-        formData.append('mname',$('#mname').val());
-        formData.append('lname',$('#lname').val());
-        formData.append('email',$('#email').val());
-        formData.append('mobile',$('#mobile').val());
-        formData.append('phone',$('#phone').val());
-     formData.append('image', $('#imageUpload')[0].files[0]); 
+      var prefix = $('#prefix').val(); 
+      var gender = $('#gender').val();
+      var fname = $('#fname').val();
+      var mname = $('#mname').val();
+      var lname = $('#lname').val(); 
+      var email = $('#email').val();
+      var mobile = $('#mobile').val(); 
+      var phone = $('#phone').val();
+      var name = fname+' '+mname+' '+lname;
       $.ajax({
            type: "POST",
-           data:formData,
+           data:{prefix:prefix,gender:gender,name:name,email:email,mobile:mobile,phone:phone},
            url: "<?php echo base_url('admin/ownprofile');?>",
-           processData: false,
-           contentType: false,
            success: function(data)
-           {console.log(formData)
-              $('#prig').val($('#pgenders').val()); 
-              $('#pfname').val($('#prefix').val()) 
-              $('#pprefix').val($('#mname').val());
-              $('#pmname').val($('#mname').val());
-              $('#plname').val($('#lname').val());
-              $('#pemail').val($('#email').val());
-              $('#pmobile').val($('#phone').val());
-              $('#pphone').val(formData.phone);
+           {
             
-            }
+           
+           
+              $('#prig').val(gender); 
+              $('#pfname').val(fname) 
+              $('#pprefix').val(prefix);
+              $('#pmname').val(mname);
+              $('#plname').val(lname);
+              $('#pemail').val(email);
+              $('#pmobile').val(mobile);
+              $('#pphone').val(phone);
+            
+           }
         }); 
       
     });
@@ -1056,17 +1025,6 @@ $('#checkbox2').click(function(){
 
  });
     $('#next3').click(function(){
-  alert('sas');
-      formData.append('prefix',$('#prefix').val());
-        formData.append('gender',$('#pgenders').val());
-        formData.append('name',$('#fname').val());
-        formData.append('mname',$('#mname').val());
-        formData.append('lname',$('#lname').val());
-        formData.append('email',$('#email').val());
-        formData.append('mobile',$('#mobile').val());
-        formData.append('phone',$('#phone').val());
-     formData.append('image', $('#imageUpload')[0].files[0]); 
-
       var checkbox2 =  $('#checkbox2').prop('checked');
       var prefix    = $('#pprefix').val();
       var fname     = $('#pfname').val();
