@@ -176,7 +176,8 @@ School Owner Profile
             <div class="form-group">
               <div class="avatar-upload">
                 <div class="avatar-edit">
-                  <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+
+                  <input type='file' id="priimg" value=""accept=".png, .jpg, .jpeg" />
                   <label for="imageUpload"></label>
                 </div>
                 <div class="avatar-preview">
@@ -304,7 +305,7 @@ School Owner Profile
               <div class="col-md-12 ">
                 <div class="form-group">
                   <label>School Name</label>
-                  <input type="text" class="form-control"   value="" required>
+                  <input type="text"id="sname" class="form-control"   value="" required>
                 </div>
         <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add School Name. </div>
@@ -313,14 +314,14 @@ School Owner Profile
          <div class="col-md-12 ">
                 <div class="form-group">
                   <label>School Tagline</label>
-                  <input type="text" class="form-control"   value="" >
+                  <input type="text" id="stag"class="form-control"   value="" >
                 </div>
         
               </div>
               <div class="col-md-12 ">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Email </label>
-                  <input type="email" class="form-control"  required>
+                  <input type="email"id="semail" class="form-control"  required>
                 </div>
         <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add Valid Email. </div>
@@ -328,7 +329,7 @@ School Owner Profile
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label for="exampleInputMobile">Phone Number </label>
-                  <input type="number" class="form-control"  required>
+                  <input type="number"id="sphone" class="form-control"  required>
                 </div>
         <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add Phone Number. </div>
@@ -336,7 +337,7 @@ School Owner Profile
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label for="exampleInputPhone">Alternate Phone Number</label>
-                  <input type="number" class="form-control">
+                  <input type="number"id="smobile" class="form-control">
                 </div>
               </div> 
             </div>  <!---  row   ---->
@@ -347,7 +348,7 @@ School Owner Profile
           <div class="col-md-12">
             <div class="form-group">
               <label>Address</label>
-              <input type="text" class="form-control"  value="" required>
+              <input type="text"id="sadd" class="form-control"  value="" required>
             </div>
       <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add School Address. </div>
@@ -357,7 +358,7 @@ School Owner Profile
           <div class="col-md-4">
             <div class="form-group">
               <label>City</label>
-              <input type="text" class="form-control"  value="" required>
+              <input type="text"id="scity" class="form-control"  value="" required>
             </div>
       <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add City. </div>
@@ -365,7 +366,7 @@ School Owner Profile
           <div class="col-md-4 ">
             <div class="form-group">
               <label>Country</label>
-              <input type="text" class="form-control"  value="" required>
+              <input type="text"id="scounty" class="form-control"  value="" required>
             </div>
       <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add Country. </div>
@@ -373,14 +374,14 @@ School Owner Profile
           <div class="col-md-4">
             <div class="form-group">
               <label>Postal Code</label>
-              <input type="number" class="form-control"  required>
+              <input type="number"id="sportal" class="form-control"  required>
             </div>
       <div class="valid-feedback"></div>
           <div class="invalid-feedback">Please add Postal Code. </div>
           </div>
       </div>  <!---  row   ---->
     <div class="mr-3 mb-3 pull-right">
-  <button type="submit" class="btn btn-outline-primary btn-round submit"> Save</button>
+  <button type="button" id="next4" class="btn btn-outline-primary btn-round submit"> Save</button>
        </div>
       </div>
     </div>
@@ -393,165 +394,7 @@ School Owner Profile
     <input type="button" name="previous" class="previous action-button button1" value="Previous" />
     
   </fieldset>
-  <fieldset>
-    <h2 class="fs-title">Principal Profile</h2>
-    <div class="row mb-3">
-        <div class=" offset-md-8 col-md-4 float-right text-right">
-                 <div class="checkbox checkbox-primary">
-            <input id="checkbox2" value="" type="checkbox" checked="">
-            <label for="checkbox2">
-        Same As Owner Profile
-                        </label>
-      </div>
-       
-        </div>
-        </div>
-  <div class="row mt-4 mb-4">
-                    <div class="col-md-2 ">
-          
-          <div class="form-group">
-              <label for="sel1">Salutation</label>
-             <select class="form-control" id="pprefix" value=""name="Salutation">
-                                        <option value="" class="small" disabled="" selected="">Select</option>
-                                        <option value="Ms"> Ms </option> 
-                                        <option value="Miss"> Miss </option> 
-                                        <option value="Mrs"> Mrs </option> 
-                                        <option value="Mr"> Mr </option> 
-                                        <option value="Master"> Master </option> 
-                                        <option value="Rev"> Rev (Reverend) </option>
-                                        <option value="Dr"> Dr (Docto) </option> 
-                                        <option value="Atty"> Atty (Attorney) </option>  
-                                        <option value="Hon"> Hon (Honorable) </option>  
-                                        <option value="Prof"> Prof (Professor) </option>  
-                                
-                                        <option value="Ofc"> Ofc (Officer) </option> 
-                                    </select>
-          </div>
-                   
-                    </div>
-                    <div class="col-md-4 ">
-                      <div class="form-group">
-                        <label>Principal  First Name</label>
-                        <input type="text" id="pfname" value="" class="form-control" placeholder="First Name" value="">
-                      </div>
-                    </div>
-          <div class="col-md-3 ">
-                      <div class="form-group">
-                        <label> Middle Name</label>
-                        <input type="text"id="pmname"  value=""class="form-control" placeholder="Middle Name" value="">
-                      </div>
-                    </div>
-          <div class="col-md-3 ">
-                      <div class="form-group">
-                        <label> Last Name</label>
-                        <input type="text"id="plname" value="" class="form-control" placeholder="Last Name" value="">
-                      </div>
-                    </div>
-                    <div class="col-md-4 ">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Email </label>
-                        <input type="email"id="pemail" value="" class="form-control" placeholder="Email">
-                      </div>
-                    </div>
-          <div class="col-md-4 ">
-                      <div class="form-group">
-                        <label for="exampleInputMobile">Mobile </label>
-                        <input type="number"id="pmobile" value="" class="form-control" placeholder="Mobile">
-                      </div>
-                    </div>
-          <div class="col-md-4 ">
-                      <div class="form-group">
-                        <label for="exampleInputPhone">Phone No </label>
-                        <input type="number"id="pphone"  value=""class="form-control" placeholder="Phone No">
-                      </div>
-                    </div>
-                  </div>
-            <input type="button" name="next" id="next3" class="next action-button button1" value="Next" />       
-    <input type="button" name="previous" class="previous action-button button1" value="Previous" />
-  
-  </fieldset>
-  <fieldset>
-    <h2 class="fs-title">School Profile</h2>
-    
-  <div class="row mt-4 mb-4">
-          <div class="col-md-4 ">
-                      <div class="form-group">
-                       <div class="avatar-upload">
-            <div class="avatar-edit">
-              <input type='file' id="imageUpload"name="logo"value="" accept=".png, .jpg, .jpeg" />
-              <label for="imageUpload"></label>
-            </div>
-            <div class="avatar-preview">
-              <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
-              </div>
-            </div>
-          </div>
-                      </div>
-                    </div>
-                    <div class="col-md-8 ">
-          <div class="row">
-           <div class="col-md-12 ">
-                      <div class="form-group">
-                        <label>School Name</label>
-                        <input type="text"id="sname" value="" class="form-control"  placeholder="School Name" value="">
-                      </div>
-            </div>
-            <div class="col-md-12 ">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Email </label>
-                        <input type="email"id="semail" value=""  class="form-control" placeholder="Email">
-                      </div>
-                    </div>
-          <div class="col-md-6 ">
-                      <div class="form-group">
-                        <label for="exampleInputMobile">Phone No </label>
-                        <input type="number" id="sphone" value="" class="form-control" placeholder="Phone No">
-                      </div>
-                    </div>
-          <div class="col-md-6 ">
-                      <div class="form-group">
-                        <label for="exampleInputPhone">Alternate Phone No</label>
-                        <input type="number"id="smobile" value=""  class="form-control" placeholder="Alternate Phone No">
-                      </div>
-                    </div>
-            </div>
-                    </div>
-                    
-                    
-                  </div>
-                 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Address</label>
-                        <input type="text"id="sadd" value=""  class="form-control" placeholder="School Address" value="">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label>City</label>
-                        <input type="text" id="scity" value=""  class="form-control" placeholder="City" value="">
-                      </div>
-                    </div>
-                    <div class="col-md-4 ">
-                      <div class="form-group">
-                        <label>Country</label>
-                        <input type="text" id="scounty" value="" class="form-control" placeholder="Country" value="">
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label>Postal Code</label>
-                        <input type="number" id="sportal" value="" class="form-control" placeholder="ZIP Code">
-                      </div>
-                    </div>
-                  </div>
-            <input type="button" id="next4"name="next" class="next action-button button1" value="Next" />       
-    <input type="button" name="previous" class="previous action-button button1" value="Previous" />
-  
-  </fieldset>
+ 
   <fieldset>
     <h2 class="fs-title">Upload Student Master</h2>
    
@@ -565,7 +408,7 @@ School Owner Profile
           </li><?php $a=1; foreach ($class as $value) { ?>
           <li class="table-row">
             
-             <div class="col col-md-2 pt-3" id="<?php echo $value->id ?>" ><?php echo $value->className; ?></div>
+             <!-- <div class="col col-md-2 pt-3" id="<?php //echo $value->id ?>" ><?php //echo $value->className; ?></div> -->
              <div class="col col-md-8" data-label="Section" >
             
            
@@ -574,8 +417,8 @@ School Owner Profile
             <div class="container1" id="<?php echo 'add'.$a; ?>"  >
              
             <div style="display:inline-block;">
-            <input type="hidden" id="classname"name="class[]" value="<?php echo $value->className; ?>">
-            <input type="text" id="Section" name="mytext[]" class="form-control" value="A" disabled></div>
+            
+            <input type="text" id="Section"   name="mytext[]" class="form-control Section" value="<?php echo $value->className; ?>-A" readonly="readonly"></div>
            
             </div>
           
@@ -586,7 +429,7 @@ School Owner Profile
           
             
             
-            <div class="col col-md-2">  <button class="add_form_field btn btn-outline-primary btn-round" type="button" id="<?php echo $value->id ?>">Add  </button></div>
+            <div class="col col-md-2">  <button class="add_form_field btn btn-outline-primary btn-round" type="button" value="<?php echo $value->className; ?>" id="<?php echo $value->id ?>">Add  </button></div>
           </li> <?php $a++; } ?>
           </ul>
           </div>
@@ -607,9 +450,10 @@ School Owner Profile
             <div class="file-select-name" id="noFile">No file chosen...</div> 
             
             <input type='file' id="chooseFile"name="Student"value=""/>
+
             </div>
           </div>
-                  </div>
+             <a href="javascript:void(0)" id="export">dawnload sample file</a>     </div>
                  </div>
             <input type="button"id="importstuden"  name="next" class="next action-button button1" value="Next" />       
     <input type="button" name="previous" class="previous action-button button1" value="Previous" />
@@ -852,12 +696,15 @@ $(document).ready(function() {
     var x = 1;
     $(".add_form_field").click(function(e){
       var id = $(this).attr('id');
-
-      //var append = $(".container1").attr('id');alert(append);
+      var d = parseInt(65)-parseInt(id);
+      var b = parseInt(d)+parseInt(id);
+      
         e.preventDefault();
         if(x < max_fields){
+        var clas = $("#"+id).val();
+        var a = String.fromCharCode(parseInt(b)+parseInt(x));
             x++;
-            $("#add"+id).append('<div style="display:inline-block;" ><input type="text" name="mytext[]" style="display:inline;" class="form-control" /><a href="#" class="close-thik " style="display:inline;"> </a></div>'); //add input box
+            $("#add"+id).append('<div style="display:inline-block;" ><input type="text" name="mytext[]" value="'+clas+'-'+a+'"style="display:inline;" class="form-control" /><a href="#" class="close-thik " style="display:inline;"> </a></div>'); //add input box
         }
   else
   {
@@ -985,8 +832,6 @@ $(".previous").click(function(){
 
        $('#Owner').click(function(){
        var formData = new FormData();
-
-     
         formData.append('prefix',$('#prefix').val());
         formData.append('gender',$('#pgenders').val());
         formData.append('name',$('#fname').val());
@@ -1003,7 +848,7 @@ $(".previous").click(function(){
            processData: false,
            contentType: false,
            success: function(data)
-           {console.log(formData)
+           {
               $('#prig').val($('#pgenders').val()); 
               $('#pfname').val($('#prefix').val()) 
               $('#pprefix').val($('#mname').val());
@@ -1056,29 +901,25 @@ $('#checkbox2').click(function(){
 
  });
     $('#next3').click(function(){
-  alert('sas');
-      formData.append('prefix',$('#prefix').val());
-        formData.append('gender',$('#pgenders').val());
-        formData.append('name',$('#fname').val());
-        formData.append('mname',$('#mname').val());
-        formData.append('lname',$('#lname').val());
-        formData.append('email',$('#email').val());
-        formData.append('mobile',$('#mobile').val());
-        formData.append('phone',$('#phone').val());
-     formData.append('image', $('#imageUpload')[0].files[0]); 
 
+      var formData = new FormData();
       var checkbox2 =  $('#checkbox2').prop('checked');
-      var prefix    = $('#pprefix').val();
-      var fname     = $('#pfname').val();
-      var mname     = $('#pmname').val();
-      var lname     = $('#plname').val(); 
-      var email     = $('#pemail').val();
-      var mobile    = $('#pmobile').val(); 
-      var phone     = $('#pphone').val();
-      var name      = fname+' '+mname+' '+lname;
+      formData.append('pprefix',$('#pprefix').val());
+        formData.append('checkbox2',checkbox2);
+        formData.append('pfname',$('#pfname').val());
+        formData.append('pmname',$('#pmname').val());
+        formData.append('plname',$('#plname').val());
+        formData.append('pemail',$('#pemail').val());
+        formData.append('pmobile',$('#pmobile').val());
+        formData.append('pphone',$('#pphone').val());
+        formData.append('image', $('input[type=file]')[0].files[0]); 
+
+     
       $.ajax({
            type: "POST",
-           data:{prefix:prefix,name:name,email:email,mobile:mobile,phone:phone,cheack:checkbox2},
+           data:formData,
+           processData: false,
+           contentType: false,
            url: "<?php echo base_url('admin/Principle');?>",
            success: function(data)
            {
@@ -1093,6 +934,7 @@ $('#checkbox2').click(function(){
 
      
         formData.append('sname',$('#sname').val());
+        formData.append('stag',$('#stag').val());
         formData.append('semail',$('#semail').val());
         formData.append('sphone',$('#sphone').val());
         formData.append('smobile',$('#smobile').val());
@@ -1118,9 +960,10 @@ $('#checkbox2').click(function(){
 
       $('#claasection').click(function(){
         data = $("#msform").serialize();
-       console.log(msform);
+       //var data = $('#Section').val();
+      
       $.ajax({
-           type: "POST",
+          type: "POST",
           data: data,
          
            url: "<?php echo base_url('admin/Claasection');?>",
@@ -1168,6 +1011,21 @@ $('#checkbox2').click(function(){
         }); 
       
     });  
+
+    $('#export').click(function(){
+
+      $.ajax({
+           type: "POST",
+           url: "<?php echo base_url('admin/Export');?>",
+           dataType:'json',
+           success: function(data)
+           {
+            window.open(data.file);
+            console.log(data.file);
+           }
+        }); 
+      
+    });
 
     $('#registation').click(function(){
         

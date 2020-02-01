@@ -4,8 +4,9 @@
  *  PencilCrunch School Management System
  *  marcosdavid1794@gmail.com
  */
+require_once APPPATH ."/third_party/PHPExcel.php";
+
 class Admin extends CI_Controller{
-    
     public function __construct(){
         parent::__construct();
 
@@ -42,52 +43,57 @@ class Admin extends CI_Controller{
 
     /***session setup***/
     function Addsession() {
-        if(isset($_POST['to'])){
-            
-            $data['session']             = $this->input->post('to').'-'. $this->input->post('from');            
-            $data['schoolId'] = $_SESSION['schoolId'];
-            $this->db->insert('settings' , $data);
-            
+        $studentid =  $this->db->get_where('settings', array('schoolId'=>$_SESSION['schoolId']))->row();
+        if(empty($studentid)){
+            if(isset($_POST['to'])){
+                
+                $data['session']             = $this->input->post('to').'-'. $this->input->post('from');            
+                $data['schoolId'] = $_SESSION['schoolId'];
+                $this->db->insert('settings' , $data);
+                
+            }else{}
         }else{}
     } 
 
     /***own profile setup***/
     function ownprofile() {
-        
-        if(isset($_POST['email'])){
-             if(isset($_FILES['image'])){
-                $config['upload_path'] = 'uploads/logo/';
-                $config['allowed_types'] = 'jpg|jpeg|png|gif';
-                $this->load->library('upload',$config);
-                $this->upload->initialize($config);
-                if( ! $this->upload->do_upload('image') )
-                {
-                    $error = array('error' => $this->upload->display_errors());  
+        $own =  $this->db->get_where('admin', array('schoolId'=>$_SESSION['schoolId'],'designation'=>'Ownner'))->row()->email;
+        if(empty($own)){
+            if(isset($_POST['email'])){
+                 if(isset($_FILES['image'])){
+                    $config['upload_path'] = 'uploads/logo/';
+                    $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                    $this->load->library('upload',$config);
+                    $this->upload->initialize($config);
+                    if( ! $this->upload->do_upload('image') )
+                    {
+                        $error = array('error' => $this->upload->display_errors());  
+                           
+                    }
+                    else
+                    {
+                        $u_data =$this->upload->data();
+                        $path=$u_data['file_name'];
+                        $img = base_url().$config['upload_path'].$path;
                        
+                    }
+                }else{
+                    $img = 'https://www.schoolbirdapp.com/images/schoolbird-logo-white.png';
                 }
-                else
-                {
-                    $u_data =$this->upload->data();
-                    $path=$u_data['file_name'];
-                    $img = base_url().$config['upload_path'].$path;
-                   
-                }
-            }else{
-                $img = 'https://www.schoolbirdapp.com/images/schoolbird-logo-white.png';
+                $data=array(
+                    'prefix'     =>$this->input->post('prefix'), 
+                    'gender'     =>$this->input->post('gender'),
+                    'name'       =>$this->input->post('name').' '.$this->input->post('mname').' '.$this->input->post('lname'),
+                    'email'      =>$this->input->post('email'),
+                    'mobile'     =>$this->input->post('mobile'),
+                    'phone'      =>$this->input->post('phone'),
+                    'profile'    =>$img,
+                    'designation'=>'Ownner',
+                    'schoolId'   => $_SESSION['schoolId']
+                );
+                 $this->db->insert('admin', $data);
             }
-            $data=array(
-                'prefix'     =>$this->input->post('prefix'), 
-                'gender'     =>$this->input->post('gender'),
-                'name'       =>$this->input->post('name').' '.$this->input->post('mname').' '.$this->input->post('lname'),
-                'email'      =>$this->input->post('email'),
-                'mobile'     =>$this->input->post('mobile'),
-                'phone'      =>$this->input->post('phone'),
-                'profile'    =>$img,
-                'designation'=>'Ownner',
-                'schoolId'   => $_SESSION['schoolId']
-            );
-             $this->db->insert('admin', $data);
-        }
+        }else{}
     }
 
     /***Principle profile setup***/ 
@@ -113,24 +119,94 @@ class Admin extends CI_Controller{
      }
     /***Principle profile setup***/
     function Principle() {
-        
-            $chk = $this->input->post('cheack');
+        $prin =  $this->db->get_where('admin', array('schoolId'=>$_SESSION['schoolId'],'designation'=>'Principle'))->row();
+        if(empty($own)){
+             
+            $chk = $this->input->post('checkbox2');
             if($chk != 'true'){
+                if(isset($_FILES['image'])){
+                    $config['upload_path'] = 'uploads/logo/';
+                    $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                    $this->load->library('upload',$config);
+                    $this->upload->initialize($config);
+                    if( ! $this->upload->do_upload('image') )
+                    {
+                        $error = array('error' => $this->upload->display_errors());  
+                           
+                    }
+                    else
+                    {
+                        $u_data =$this->upload->data();
+                        $path=$u_data['file_name'];
+                        $img = base_url().$config['upload_path'].$path;
+                       
+                    }
+                }else{
+                    $img = 'https://www.schoolbirdapp.com/images/schoolbird-logo-white.png';
+                }
                 $data=array(
-                    'prefix'     =>$this->input->post('prefix'),
-                    'name'       =>$this->input->post('name'),
-                    'email'      =>$this->input->post('email'),
-                    'mobile'     =>$this->input->post('mobile'),
-                    'phone'      =>$this->input->post('phone'),
+                    'prefix'     =>$this->input->post('pprefix'),
+                    'name'       =>$this->input->post('pfname').' '.$this->input->post('pmname').' '.$this->input->post('plname'),
+                    'email'      =>$this->input->post('pemail'),
+                    'mobile'     =>$this->input->post('pmobile'),
+                    'phone'      =>$this->input->post('pphone'),
+                    'profile'    =>$img,
                     'designation'=>'Principle',
                     'schoolId'   => $_SESSION['schoolId']
                 );
                  
                 $this->db->insert('admin', $data);
             }
-        else{}
+            else{}
+        }        
+        else{}         
     }
 
+      /***Export  SAMPLE FILE***/ 
+
+      function Export(){
+        $session =   $this->db->get_where('class', array('schoolid'=>$_SESSION['schoolId']))->result();
+         $objPHPExcel = new PHPExcel();
+        $file = 'test.xlsx';
+        $this->load->library('PHPExcel');
+        $cell_collection  = $file;
+        $table_columns = array("Name");
+        $column = 0;
+        
+        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, 'naveen');
+            //$column++;    
+         
+        $objPHPExcel->setActiveSheetIndex(0);
+
+            //Set Title
+            $objPHPExcel->getActiveSheet()->setTitle($file);
+ 
+            //Save ke .xlsx, kalau ingin .xls, ubah 'Excel2007' menjadi 'Excel5'
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+            //Header
+            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+            header("Cache-Control: no-store, no-cache, must-revalidate");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            //Nama File
+            header('Content-Disposition: attachment;filename='.$file);
+
+            //Download
+            $objWriter->save("php://output");
+            $xlsData = ob_get_contents();
+            ob_end_clean();
+
+$response =  array(
+        'op' => 'ok',
+        'file' => "data:application/vnd.ms-excel;base64,".base64_encode($xlsData)
+    );
+
+die(json_encode($response));
+
+      }
       /***School detail  IMI***/
     function Schooldetail() {
         
@@ -159,6 +235,7 @@ class Admin extends CI_Controller{
             $data=array(
                   'schoolname'  =>trim($this->input->post('sname')),
                   'schoolemail' =>trim($this->input->post('sffsf ')),
+                  'slogn'       =>trim($this->input->post('stag ')),
                   'schoolph'    =>trim($this->input->post('sphone')),
                   'schoolmobile'=>trim($this->input->post('smobile')),
                   'address'     =>trim($this->input->post('sadd')),
@@ -186,31 +263,19 @@ class Admin extends CI_Controller{
 
     /***School Registation update***/
     function Claasection() {
-        $class = $this->input->post('class'); 
+       
         $section = $this->input->post('mytext');
-        foreach ($class as $key) {
-            
+        foreach ($section as $key) {
+           
             $data=array(
                     'name'=>$key,
                     'schoolid'   => $_SESSION['schoolId']
                 );
-                 
-                $this->db->insert('class', $data);
-                $insert_id = $this->db->insert_id();
-            // add class section
-               foreach ($section as $sec ) {
                   
-                  $data=array(
-                    'name'=>$sec,
-                    'class_id'=>$insert_id,
-                    'schoolid'   => $_SESSION['schoolId']
-                );
-                 
-                $this->db->insert('section', $data);
-               }
-            
+            $this->db->insert('class', $data);
         }
-        
+        /*$session =   $this->db->get_where('class', array('schoolid'=>$_SESSION['schoolId'],'designation'=>'Ownner'))->result();*/
+
            
     }
 
@@ -272,7 +337,7 @@ class Admin extends CI_Controller{
         $page_data['page_name']     = 'Timetable';
         $page_data['page_title']    = get_phrase('Timetable');
          $page_data['class']      =   $this->db->get_where('class' , array('schoolid'=>$_SESSION['schoolId']))->result();
-        //$page_data['class_id']  = $class_id;
+        
 
         $this->load->view('backend/index', $page_data);
     }
