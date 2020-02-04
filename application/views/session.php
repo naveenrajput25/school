@@ -942,7 +942,7 @@ $('#checkbox2').click(function(){
         formData.append('scity',$('#scity').val());
         formData.append('scounty',$('#scounty').val());
         formData.append('sportal',$('#sportal').val());
-     formData.append('image', $('input[type=file]')[0].files[0]); 
+        formData.append('image', $('input[type=file]')[0].files[0]); 
       
     
       $.ajax({
@@ -1020,8 +1020,7 @@ $('#checkbox2').click(function(){
            dataType:'json',
            success: function(data)
            {
-            window.open(data.file);
-            console.log(data.file);
+             getExcelExport(data.file);
            }
         }); 
       

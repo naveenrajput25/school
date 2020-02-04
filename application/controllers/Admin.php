@@ -167,14 +167,26 @@ class Admin extends CI_Controller{
       function Export(){
         $session =   $this->db->get_where('class', array('schoolid'=>$_SESSION['schoolId']))->result();
          $objPHPExcel = new PHPExcel();
-        $file = 'test.xlsx';
+        $file = 'student.xlsx';
         $this->load->library('PHPExcel');
         $cell_collection  = $file;
         $table_columns = array("Name");
+      
+       
         $column = 0;
-        
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, 'naveen');
-            //$column++;    
+        $name = array();
+       $rowname =  array('name','birthdate','gender','blood group','profile pic','phone','email','Address','City','State','Father name','mother name','attachment' );
+       foreach ($rowname as  $value) {
+           array_push($name, $value);
+       }
+       foreach ($session as  $value) {
+           array_push($name, $value->name);
+       }
+        foreach ($name as  $value) {
+         
+          $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $value);
+            $column++;    
+        }
          
         $objPHPExcel->setActiveSheetIndex(0);
 
@@ -401,36 +413,47 @@ $tt   = $this->db->get_where('timetable',array('day'=>$day,'classid'=>$clsaa,'sc
             
             list($num_cols, $num_rows) = $xlsx->dimension();
             $f = 0;
+          $colname = array();
             foreach( $xlsx->rows() as $r ) 
-            {
+            {   $col = $r;
+                array_push($colname, $col);
                 // Ignore the inital name row of excel file
                 if ($f == 0)
                 {
                     $f++;
                     continue;
                 }
+                $pushdata = array();
                 for( $i=0; $i < $num_cols; $i++ )
                 {  
-                    if ($i == 0)        $data['name']           =   $r[$i];
-                    else if ($i == 1)   $data['gender']         =   $r[$i];
-                    else if ($i == 2)   $data['father_name']    =   $r[$i];
-                    else if ($i == 3)   $data['mother_name']    =   $r[$i];
-                    else if ($i == 4)   $data['phone']          =   $r[$i];
-                    else if ($i == 5)   $data['email']          =   $r[$i];
-                    else if ($i == 7)   $data['guardian_name']           =   $r[$i];
-                    else if ($i == 8)   $data['occupation']      =   $r[$i];
-                    else if ($i == 9)   $data['class_id']      =   $r[$i];
-                    else if ($i == 10)  $data['studentId']      =   $r[$i];
-                    else if ($i == 11)  $data['studentId']      =   $r[$i];
-                    else if ($i == 12)  $data['studentId']      =   $r[$i];
-                   else if ($i == 13)   $data['studentId']      =   $r[$i];
-                                        $data['schoolid']       =  $_SESSION['schoolId'];
+                    if ($i == 0)        $data['name']         =   $r[$i];
+                    else if ($i == 1)   $data['birthday']     =   $r[$i];
+                    else if ($i == 2)   $data['gender']       =   $r[$i];
+                    else if ($i == 3)   $data['blood_group']  =   $r[$i];
+                    else if ($i == 4)   $data['profile']      =   $r[$i];
+                    else if ($i == 5)   $data['phone']        =   $r[$i];
+                    else if ($i == 6)   $data['email']        =   $r[$i];
+                    else if ($i == 7)   $data['address']      =   $r[$i];
+                    else if ($i == 8)   $data['city']         =   $r[$i];
+                    else if ($i == 9)   $data['state']        =   $r[$i];
+                    else if ($i == 10)  $data['father_name']  =   $r[$i];
+                    else if ($i == 11)  $data['mother_name']  =   $r[$i];
+                    else if ($i == 12) $data['attachment']    =   $r[$i];
+                    else if ($r[$i] == 'y') 
+                       $cl = $this->db->get_where('class', array('schoolid'=>$_SESSION['schoolId'],'name' => $colname[0][$i]))->row()->class_id;
+                      
+                        $data['class_id'] =  $colname[0][$i];
+                        print_r($data['class_id']);die;
+                          $data['class_id']    =   $cl;
+                          $data['attachment']  =  $_SESSION['schoolId'];
+                          
                 }
-                $data['class_id']   =   1;//$this->input->post('class_id');
+
                 if(!empty($data['name'])){
                 $this->db->insert('student' , $data);
                 }
             }
+          
             redirect(base_url() . 'admin/student_information/' . $this->input->post('class_id'), 'refresh');
         
         $page_data['page_name']  = 'student_bulk_add';
